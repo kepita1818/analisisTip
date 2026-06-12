@@ -1,0 +1,37 @@
+name: Update football database
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '20 4 * * *'
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Initialize schema
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+          psql "$DATABASE_URL" -f sql/schema.sql
+          psql "$DATABASE_URL" -f sql/views.sql
+
+      - name: Import daily data
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          IMPORT_YEARS: 10
+          DAILY_LOOKBACK_DAYS: 14
+        run: npm run import:daily
