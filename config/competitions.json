@@ -1,0 +1,20 @@
+[
+  {"key":"ENG1","name":"Premier League","country":"England","type":"club","source":"football-data","code":"E0"},
+  {"key":"ENG2","name":"Championship","country":"England","type":"club","source":"football-data","code":"E1"},
+  {"key":"ESP1","name":"La Liga","country":"Spain","type":"club","source":"football-data","code":"SP1"},
+  {"key":"ESP2","name":"Segunda División","country":"Spain","type":"club","source":"football-data","code":"SP2"},
+  {"key":"GER1","name":"Bundesliga","country":"Germany","type":"club","source":"football-data","code":"D1"},
+  {"key":"GER2","name":"2. Bundesliga","country":"Germany","type":"club","source":"football-data","code":"D2"},
+  {"key":"ITA1","name":"Serie A","country":"Italy","type":"club","source":"football-data","code":"I1"},
+  {"key":"ITA2","name":"Serie B","country":"Italy","type":"club","source":"football-data","code":"I2"},
+  {"key":"FRA1","name":"Ligue 1","country":"France","type":"club","source":"football-data","code":"F1"},
+  {"key":"FRA2","name":"Ligue 2","country":"France","type":"club","source":"football-data","code":"F2"},
+  {"key":"POR1","name":"Primeira Liga","country":"Portugal","type":"club","source":"football-data","code":"P1"},
+  {"key":"NED1","name":"Eredivisie","country":"Netherlands","type":"club","source":"football-data","code":"N1"},
+  {"key":"SAU1","name":"Saudi Pro League","country":"Saudi Arabia","type":"club","source":"manual","code":"SAU1"},
+  {"key":"WORLD","name":"FIFA World Cup","country":"International","type":"national_team","source":"openfootball","code":"worldcup"},
+  {"key":"WCQ","name":"World Cup Qualifiers","country":"International","type":"national_team","source":"openfootball","code":"worldcupq"},
+  {"key":"EURO","name":"UEFA Euro","country":"International","type":"national_team","source":"openfootball","code":"euro"},
+  {"key":"COPA","name":"Copa América","country":"International","type":"national_team","source":"openfootball","code":"copa-america"},
+  {"key":"INTL","name":"International Matches","country":"International","type":"national_team","source":"internationals","code":"intl"}
+]
