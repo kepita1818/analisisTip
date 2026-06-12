@@ -31,10 +31,10 @@ function parseInteger(v) {
   return Number.isFinite(n) ? n : null;
 }
 
-export async function importFootballData({ daily = false } = {}) {
-  const competitions = loadCompetitions().filter(c => c.source === 'football-data');
-  const years = Number(process.env.IMPORT_YEARS || 10);
-  const seasons = daily ? buildSeasonCodes(2) : buildSeasonCodes(years);
+export async function importFootballData({ competitionsFilter = null, years = 3 } = {}) {
+  const all = loadCompetitions().filter(c => c.source === 'football-data');
+  const competitions = competitionsFilter?.length ? all.filter(c => competitionsFilter.includes(c.key)) : all;
+  const seasons = buildSeasonCodes(years);
 
   for (const comp of competitions) {
     const competition = await ensureCompetition(comp);
@@ -46,6 +46,8 @@ export async function importFootballData({ daily = false } = {}) {
         const seasonRow = await ensureSeason(competition.id, season.label);
 
         for (const row of rows) {
+          if (!row.HomeTeam || !row.AwayTeam || !row.Date) continue;
+
           const home = await ensureTeam(row.HomeTeam, comp.country, comp.type);
           const away = await ensureTeam(row.AwayTeam, comp.country, comp.type);
 
@@ -77,21 +79,11 @@ export async function importFootballData({ daily = false } = {}) {
             venue: null
           });
         }
+
+        console.log(`Imported ${comp.key} ${season.label}: ${rows.length} rows`);
       } catch (error) {
         console.warn(`Skipped ${comp.key} ${season.label}: ${error.message}`);
       }
     }
   }
-}
-
-if (process.argv[1].includes('import-football-data.js')) {
-  importFootballData({ daily: process.argv.includes('--daily') })
-    .then(() => {
-      console.log('football-data import finished');
-      process.exit(0);
-    })
-    .catch(err => {
-      console.error(err);
-      process.exit(1);
-    });
 }
