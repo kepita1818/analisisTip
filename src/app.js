@@ -24,23 +24,17 @@ app.get('/match-center', (_req, res) => {
   res.sendFile(path.join(publicDir, 'match-center.html'));
 });
 
-app.get('/health', (_req, res) => {
-  res.json({
-    ok: true,
-    service: 'football-db-app'
-  });
-});
-
 app.use((req, res) => {
   res.status(404).json({
     error: 'Not found',
-    message: 'Route not found',
     available_pages: ['/', '/match-center'],
     available_api_endpoints: [
       '/api/health',
       '/api/competitions',
       '/api/matches?date=YYYY-MM-DD',
-      '/api/matches/:id'
+      '/api/matches/:id',
+      '/api/analyze/team?team=Barcelona&limit=10',
+      '/api/analyze/matchup?home=Liverpool&away=Arsenal&limit=10'
     ]
   });
 });
@@ -48,5 +42,4 @@ app.use((req, res) => {
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
-  console.log(`Static files served from: ${publicDir}`);
 });
