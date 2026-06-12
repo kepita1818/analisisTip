@@ -4,388 +4,257 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Match Center</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root,[data-theme="light"]{--font-body:'Inter',system-ui,sans-serif;--text-xs:clamp(.75rem,.7rem + .25vw,.875rem);--text-sm:clamp(.875rem,.8rem + .35vw,1rem);--text-base:clamp(1rem,.95rem + .25vw,1.125rem);--text-lg:clamp(1.125rem,1rem + .75vw,1.5rem);--text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-5:1.25rem;--space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;--space-12:3rem;--color-bg:#f7f6f2;--color-surface:#f9f8f5;--color-surface-2:#fbfbf9;--color-surface-offset:#f3f0ec;--color-border:#d4d1ca;--color-divider:#dcd9d5;--color-text:#28251d;--color-text-muted:#6c6963;--color-text-inverse:#f9f8f4;--color-primary:#01696f;--color-primary-hover:#0c4e54;--color-blue:#006494;--color-success:#437a22;--color-warning:#964219;--radius-md:.5rem;--radius-lg:.75rem;--radius-xl:1rem;--radius-full:9999px;--shadow-sm:0 1px 2px rgba(0,0,0,.05);--shadow-md:0 8px 24px rgba(0,0,0,.08);--transition:180ms cubic-bezier(.16,1,.3,1)}
-    [data-theme="dark"]{--color-bg:#171614;--color-surface:#1c1b19;--color-surface-2:#201f1d;--color-surface-offset:#22211f;--color-border:#393836;--color-divider:#262523;--color-text:#cdccca;--color-text-muted:#9a9894;--color-text-inverse:#2b2a28;--color-primary:#4f98a3;--color-primary-hover:#227f8b;--color-blue:#5591c7;--color-success:#6daa45;--color-warning:#fdab43;--shadow-sm:0 1px 2px rgba(0,0,0,.2);--shadow-md:0 12px 32px rgba(0,0,0,.35)}
-    *{box-sizing:border-box;margin:0;padding:0} html{-webkit-font-smoothing:antialiased} body{min-height:100dvh;font-family:var(--font-body);font-size:var(--text-base);color:var(--color-text);background:var(--color-bg);line-height:1.5} button,input,select{font:inherit;color:inherit} .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-    .app{max-width:1260px;margin:0 auto;padding:var(--space-6) var(--space-4) var(--space-12)} .topbar{display:flex;justify-content:space-between;align-items:center;gap:var(--space-4);margin-bottom:var(--space-8)} .brand{display:flex;align-items:center;gap:var(--space-3)} .logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--color-primary),var(--color-blue));display:grid;place-items:center;color:#fff;box-shadow:var(--shadow-sm)} .logo svg{width:22px;height:22px} .brand h1{font-size:var(--text-lg);line-height:1.1} .brand p{font-size:var(--text-sm);color:var(--color-text-muted)} .theme-toggle{width:44px;height:44px;border-radius:50%;border:1px solid var(--color-border);background:var(--color-surface)}
-    .hero,.panel,.stat,.table-wrap,.card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);box-shadow:var(--shadow-sm)} .hero{padding:var(--space-6);display:grid;gap:var(--space-4);margin-bottom:var(--space-6)} .hero h2{font-size:var(--text-xl);line-height:1.05} .hero p{color:var(--color-text-muted);max-width:70ch}
-    .controls{display:grid;gap:var(--space-4);margin-bottom:var(--space-6)} .panel{padding:var(--space-5)} .grid{display:grid;gap:var(--space-4)} .grid-4{grid-template-columns:repeat(4,1fr)} .grid-3{grid-template-columns:repeat(3,1fr)} .grid-2{grid-template-columns:repeat(2,1fr)}
-    .field{display:grid;gap:.45rem} .field label{font-size:var(--text-sm);color:var(--color-text-muted)} .input,.select{min-height:46px;border:1px solid var(--color-border);background:var(--color-surface-2);border-radius:14px;padding:0 .9rem;width:100%} .actions{display:flex;gap:var(--space-3);flex-wrap:wrap;align-items:end} .btn{min-height:46px;padding:0 1rem;border-radius:999px;border:1px solid var(--color-border);background:var(--color-surface-2);cursor:pointer;transition:all var(--transition)} .btn:hover{border-color:var(--color-primary)} .btn.primary{background:var(--color-primary);color:var(--color-text-inverse);border-color:var(--color-primary)}
-    .summary{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-4);margin-bottom:var(--space-6)} .stat{padding:var(--space-4)} .stat strong{display:block;font-size:1.8rem;line-height:1} .stat span{display:block;margin-top:.35rem;color:var(--color-text-muted);font-size:var(--text-sm)}
-    .section-title{display:flex;justify-content:space-between;align-items:end;gap:var(--space-4);margin:0 0 var(--space-4)} .section-title h3{font-size:var(--text-lg)} .section-title p{color:var(--color-text-muted);font-size:var(--text-sm)}
-    .kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-4)} .card{padding:var(--space-5)} .pill{display:inline-flex;align-items:center;gap:.4rem;padding:.45rem .7rem;border-radius:999px;font-size:var(--text-xs);background:var(--color-surface-offset);border:1px solid var(--color-border);text-transform:uppercase;letter-spacing:.04em;margin-bottom:var(--space-3)} .metric{font-size:2rem;font-weight:800;line-height:1} .muted{color:var(--color-text-muted)}
-    .bars{display:grid;gap:var(--space-3)} .bar-item{display:grid;gap:.4rem} .bar-head{display:flex;justify-content:space-between;gap:var(--space-3);font-size:var(--text-sm)} .bar-track{height:10px;border-radius:999px;background:var(--color-surface-offset);overflow:hidden;border:1px solid var(--color-border)} .bar-fill{height:100%;background:linear-gradient(90deg,var(--color-primary),var(--color-blue));width:0%}
-    .compare{display:grid;grid-template-columns:1fr auto 1fr;gap:var(--space-4);align-items:center} .club-box{text-align:center} .club-box h4{font-size:var(--text-lg)} .vs{font-size:1.4rem;font-weight:800;color:var(--color-text-muted)}
-    .table-wrap{overflow:auto;margin-top:var(--space-4)} table{width:100%;border-collapse:collapse} th,td{text-align:left;padding:.9rem 1rem;border-bottom:1px solid var(--color-divider);font-size:var(--text-sm)} th{color:var(--color-text-muted);font-weight:600} tbody tr:hover{background:var(--color-surface-2)}
-    .empty{padding:var(--space-10);text-align:center;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);color:var(--color-text-muted)}
-    @media (min-width:900px){.controls{grid-template-columns:1.2fr .8fr}}
-    @media (max-width:900px){.grid-4,.grid-3,.grid-2,.summary,.kpi-grid,.compare{grid-template-columns:1fr}.topbar{flex-direction:column;align-items:flex-start}}
+    :root{--bg:#f5f3ee;--card:#fcfbf8;--line:#ddd8cf;--text:#1f1b16;--muted:#6e6860;--brand:#0d7b83;--brand2:#095d66;--accent:#d9a441;--shadow:0 10px 30px rgba(0,0,0,.06)}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    .wrap{max-width:1400px;margin:0 auto;padding:20px 18px 34px}
+    .top{display:flex;justify-content:space-between;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 18px;box-shadow:var(--shadow)}
+    .title{display:flex;flex-direction:column;gap:4px}.title h1{margin:0;font-size:28px;line-height:1}.title p{margin:0;color:var(--muted);font-size:14px}
+    .top-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .btn{height:42px;border:1px solid var(--line);background:#fff;border-radius:12px;padding:0 14px;font-weight:700;cursor:pointer}
+    .btn.primary{background:var(--brand);color:#fff;border-color:var(--brand)} .btn.primary:hover{background:var(--brand2)}
+    .datebar{margin:18px 0 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px 14px;box-shadow:var(--shadow)}
+    .date-nav{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.date-nav .nav{width:42px;padding:0;font-size:18px}
+    .date-pill{background:#fff;border:1px solid var(--line);border-radius:999px;padding:10px 14px;font-weight:800;min-width:170px;text-align:center}
+    .days{display:flex;gap:10px;overflow:auto;padding-bottom:4px;flex:1}
+    .day{flex:0 0 auto;border:1px solid var(--line);background:#fff;border-radius:14px;padding:10px 12px;min-width:74px;text-align:center;cursor:pointer}
+    .day strong{display:block;font-size:16px}.day span{display:block;font-size:12px;color:var(--muted);margin-top:3px}.day.active{background:var(--brand);border-color:var(--brand);color:#fff}.day.active span{color:#e3ffff}
+    .layout{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:16px;align-items:start}
+    .list{display:flex;flex-direction:column;gap:14px}
+    .section{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
+    .section-head{display:flex;justify-content:space-between;align-items:end;gap:10px;margin-bottom:12px}.section-head h2{margin:0;font-size:18px}.section-head small{color:var(--muted)}
+    .match{border:1px solid var(--line);background:#fff;border-radius:18px;padding:14px 14px 12px;cursor:pointer;transition:.16s transform,.16s box-shadow,.16s border-color;display:grid;gap:10px}.match:hover{transform:translateY(-1px);border-color:#bfb8ad;box-shadow:0 8px 24px rgba(0,0,0,.06)}
+    .row1{display:flex;justify-content:space-between;gap:12px;align-items:center}.comp{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.04em}.status{font-size:12px;font-weight:800;color:var(--muted)}
+    .teams{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center}.team{font-size:18px;font-weight:800;line-height:1.1}.home{text-align:left}.away{text-align:right}.vs{font-size:12px;color:var(--muted);font-weight:800}
+    .meta{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:13px}.score{font-size:22px;font-weight:900;min-width:54px;text-align:center;color:#111}
+    .empty{padding:60px 20px;text-align:center;background:var(--card);border:1px solid var(--line);border-radius:18px;color:var(--muted);box-shadow:var(--shadow)}
+    .side{position:sticky;top:16px}.detail{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow)}
+    .detail h3{margin:0 0 4px;font-size:18px}.detail .sub{color:var(--muted);font-size:13px;margin-bottom:14px}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.kv{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 12px}.kv span{display:block;color:var(--muted);font-size:12px;margin-bottom:4px}.kv strong{font-size:15px}
+    .detail-box{margin-top:12px;border:1px solid var(--line);border-radius:14px;background:#fff;padding:12px}.detail-box h4{margin:0 0 10px;font-size:15px}.bar{height:10px;border-radius:999px;background:#eee;overflow:hidden;border:1px solid var(--line)}.fill{height:100%;background:linear-gradient(90deg,var(--brand),var(--accent));width:0%}
+    .detail-score{display:flex;justify-content:center;align-items:center;gap:14px;margin:10px 0 12px}.detail-score .s{font-size:30px;font-weight:900}.muted{color:var(--muted)}
+    @media (max-width:1100px){.layout{grid-template-columns:1fr}.side{position:static}}
+    @media (max-width:700px){.top,.datebar{flex-direction:column;align-items:stretch}.date-nav{justify-content:space-between}.teams{grid-template-columns:1fr}.away{text-align:left}.score{justify-self:start;text-align:left}.detail-grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
-  <a class="sr-only" href="#main">Saltar al contenido</a>
-  <div class="app">
-    <header class="topbar">
-      <div class="brand">
-        <div class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l7 4v12l-7 4-7-4V6l7-4Z"/><path d="M9 10h6M9 14h6"/></svg></div>
-        <div>
-          <h1>Match Center</h1>
-          <p>Análisis de equipos, promedios, porcentajes y comparación previa</p>
-        </div>
+  <div class="wrap">
+    <header class="top">
+      <div class="title">
+        <h1>Match Center</h1>
+        <p>Partidos del día, navegación por fechas y detalle del encuentro.</p>
       </div>
-      <button class="theme-toggle" data-theme-toggle aria-label="Cambiar tema">☾</button>
+      <div class="top-actions">
+        <select id="competitionFilter" class="btn" style="min-width:220px"></select>
+        <button class="btn primary" id="reloadBtn">Recargar</button>
+      </div>
     </header>
 
-    <main id="main">
-      <section class="hero">
-        <h2>Centro de análisis para predicciones</h2>
-        <p>Esta versión de Match Center ya no está pensada para ver resultados del día, sino para sacar medias, porcentajes, BTTS, over de goles, corners y tarjetas usando tus partidos históricos y los endpoints de análisis del backend.</p>
-      </section>
+    <div class="datebar">
+      <div class="date-nav">
+        <button class="btn nav" id="prevDay">‹</button>
+        <div class="date-pill" id="selectedDate">--</div>
+        <button class="btn nav" id="nextDay">›</button>
+      </div>
+      <div class="days" id="daysStrip"></div>
+    </div>
 
-      <section class="controls">
-        <div class="panel">
-          <div class="section-title">
+    <div class="layout">
+      <main class="list">
+        <section class="section">
+          <div class="section-head">
             <div>
-              <h3>Análisis de cruce</h3>
-              <p>Compara local y visitante con muestra configurable</p>
+              <h2 id="dayTitle">Partidos</h2>
+              <small id="daySubtitle">Cargando...</small>
             </div>
+            <small id="countInfo"></small>
           </div>
-          <div class="grid grid-4">
-            <div class="field">
-              <label for="homeTeam">Equipo local</label>
-              <input id="homeTeam" class="input" placeholder="Ej: Liverpool" value="Liverpool" />
-            </div>
-            <div class="field">
-              <label for="awayTeam">Equipo visitante</label>
-              <input id="awayTeam" class="input" placeholder="Ej: Arsenal" value="Arsenal" />
-            </div>
-            <div class="field">
-              <label for="competition">Competición</label>
-              <select id="competition" class="select">
-                <option value="">Todas</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="limit">Últimos partidos</label>
-              <select id="limit" class="select">
-                <option value="5">5</option>
-                <option value="8">8</option>
-                <option value="10" selected>10</option>
-                <option value="12">12</option>
-                <option value="15">15</option>
-              </select>
-            </div>
-          </div>
-          <div class="actions" style="margin-top:1rem;">
-            <button class="btn primary" id="analyzeMatchupBtn">Analizar cruce</button>
-            <button class="btn" id="swapTeamsBtn">Intercambiar</button>
-          </div>
-        </div>
+          <div id="matchesList" class="empty">Cargando partidos...</div>
+        </section>
+      </main>
 
-        <div class="panel">
-          <div class="section-title">
-            <div>
-              <h3>Análisis de equipo</h3>
-              <p>Forma reciente local, visitante o general</p>
-            </div>
-          </div>
-          <div class="grid grid-2">
-            <div class="field">
-              <label for="singleTeam">Equipo</label>
-              <input id="singleTeam" class="input" placeholder="Ej: Barcelona" value="Barcelona" />
-            </div>
-            <div class="field">
-              <label for="venue">Condición</label>
-              <select id="venue" class="select">
-                <option value="all">Todos</option>
-                <option value="home">Solo local</option>
-                <option value="away">Solo visitante</option>
-              </select>
-            </div>
-          </div>
-          <div class="actions" style="margin-top:1rem;">
-            <button class="btn primary" id="analyzeTeamBtn">Analizar equipo</button>
-          </div>
-        </div>
-      </section>
-
-      <section class="summary" id="summary">
-        <article class="stat"><strong>-</strong><span>Media esperada de goles</span></article>
-        <article class="stat"><strong>-</strong><span>Media esperada de corners</span></article>
-        <article class="stat"><strong>-</strong><span>Media esperada de tarjetas</span></article>
-        <article class="stat"><strong>-</strong><span>Muestra usada</span></article>
-      </section>
-
-      <section class="panel" style="margin-bottom:1.5rem;">
-        <div class="section-title">
-          <div>
-            <h3>Comparación principal</h3>
-            <p>Lectura rápida del cruce antes de entrar al detalle</p>
-          </div>
-        </div>
-        <div id="matchupOverview" class="empty">Introduce local y visitante y pulsa <strong>Analizar cruce</strong>.</div>
-      </section>
-
-      <section class="kpi-grid" style="margin-bottom:1.5rem;" id="expectedCards"></section>
-
-      <section class="grid grid-2" style="margin-bottom:1.5rem;">
-        <div class="panel">
-          <div class="section-title"><div><h3>Porcentajes del equipo</h3><p>Over, BTTS y resultados recientes</p></div></div>
-          <div id="teamPercentages" class="empty">Pulsa <strong>Analizar equipo</strong> para ver porcentajes.</div>
-        </div>
-        <div class="panel">
-          <div class="section-title"><div><h3>Promedios del equipo</h3><p>Goles, corners y tarjetas por partido</p></div></div>
-          <div id="teamAverages" class="empty">Aquí aparecerán las medias calculadas.</div>
-        </div>
-      </section>
-
-      <section class="panel" style="margin-bottom:1.5rem;">
-        <div class="section-title"><div><h3>Últimos partidos del equipo</h3><p>Muestra usada para los cálculos</p></div></div>
-        <div id="recentMatches" class="empty">Sin análisis cargado todavía.</div>
-      </section>
-
-      <section class="panel">
-        <div class="section-title"><div><h3>Head to head</h3><p>Enfrentamientos directos entre local y visitante</p></div></div>
-        <div id="h2hTable" class="empty">Sin comparación cargada todavía.</div>
-      </section>
-    </main>
+      <aside class="side">
+        <section class="detail" id="detailBox">
+          <h3>Detalle del partido</h3>
+          <div class="sub">Pulsa un partido para ver su información.</div>
+          <div class="empty" style="padding:24px 14px;margin:0;box-shadow:none;">Sin partido seleccionado</div>
+        </section>
+      </aside>
+    </div>
   </div>
 
   <script>
-    (() => {
-      const state = { competitions: [] };
-      const $ = (id) => document.getElementById(id);
+    const state = { date: new Date(), matches: [], allCompetition: '', competitions: [] };
+    const $ = (id) => document.getElementById(id);
 
-      function themeInit(){const btn=document.querySelector('[data-theme-toggle]');const root=document.documentElement;let theme=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';const apply=()=>{root.setAttribute('data-theme',theme);btn.textContent=theme==='dark'?'☀':'☾'};apply();btn.addEventListener('click',()=>{theme=theme==='dark'?'light':'dark';apply()})}
-      function esc(v){return String(v ?? '-').replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]))}
-      function num(v){return Number(v ?? 0).toFixed(2)}
-      function pct(v){return `${Number(v ?? 0).toFixed(1)}%`}
+    const fmtDate = d => new Date(d).toLocaleDateString('es-ES', { weekday:'short', day:'2-digit', month:'short' });
+    const iso = d => new Date(d).toISOString().slice(0,10);
+    const esc = s => String(s ?? '').replace(/[&<>\"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[m]));
 
-      async function loadCompetitions(){
-        try {
-          const res = await fetch('/api/competitions');
-          const rows = await res.json();
-          state.competitions = rows;
-          $('competition').innerHTML = '<option value="">Todas</option>' + rows.map(c => `<option value="${esc(c.key)}">${esc(c.name)} (${esc(c.key)})</option>`).join('');
-        } catch (e) {}
-      }
+    function aroundDays(center){
+      const arr=[];
+      for(let i=-3;i<=3;i++){const d=new Date(center); d.setDate(d.getDate()+i); arr.push(d);}
+      return arr;
+    }
 
-      function currentParams(){
-        return {
-          home: $('homeTeam').value.trim(),
-          away: $('awayTeam').value.trim(),
-          team: $('singleTeam').value.trim(),
-          competition: $('competition').value,
-          limit: $('limit').value,
-          venue: $('venue').value
-        };
-      }
+    function renderDays(){
+      const days = aroundDays(state.date);
+      $('daysStrip').innerHTML = days.map(d => `
+        <button class="day ${iso(d)===iso(state.date)?'active':''}" data-date="${iso(d)}">
+          <strong>${d.getDate()}</strong>
+          <span>${d.toLocaleDateString('es-ES',{month:'short'}).replace('.','')}</span>
+        </button>
+      `).join('');
 
-      async function analyzeMatchup(){
-        const { home, away, competition, limit } = currentParams();
-        if (!home || !away) return;
-        $('matchupOverview').innerHTML = '<div class="empty">Cargando comparación...</div>';
-        $('expectedCards').innerHTML = '';
-        $('h2hTable').innerHTML = '<div class="empty">Cargando H2H...</div>';
-        const qs = new URLSearchParams({ home, away, limit });
-        if (competition) qs.set('competition', competition);
-        try {
-          const res = await fetch(`/api/analyze/matchup?${qs.toString()}`);
-          const data = await res.json();
-          renderMatchup(data);
-        } catch (e) {
-          $('matchupOverview').innerHTML = '<div class="empty">No se pudo cargar el análisis del cruce.</div>';
-          $('h2hTable').innerHTML = '<div class="empty">Sin H2H disponible.</div>';
-        }
-      }
-
-      async function analyzeTeam(){
-        const { team, competition, limit, venue } = currentParams();
-        if (!team) return;
-        $('teamPercentages').innerHTML = '<div class="empty">Cargando porcentajes...</div>';
-        $('teamAverages').innerHTML = '<div class="empty">Cargando promedios...</div>';
-        $('recentMatches').innerHTML = '<div class="empty">Cargando últimos partidos...</div>';
-        const qs = new URLSearchParams({ team, limit, venue });
-        if (competition) qs.set('competition', competition);
-        try {
-          const res = await fetch(`/api/analyze/team?${qs.toString()}`);
-          const data = await res.json();
-          renderTeam(data);
-        } catch (e) {
-          $('teamPercentages').innerHTML = '<div class="empty">No se pudo cargar el análisis del equipo.</div>';
-          $('teamAverages').innerHTML = '<div class="empty">Revisa el nombre exacto del equipo en tu base.</div>';
-          $('recentMatches').innerHTML = '<div class="empty">Sin partidos recientes.</div>';
-        }
-      }
-
-      function renderMatchup(data){
-        $('summary').innerHTML = `
-          <article class="stat"><strong>${num(data.expected_ranges?.goals)}</strong><span>Media esperada de goles</span></article>
-          <article class="stat"><strong>${num(data.expected_ranges?.corners)}</strong><span>Media esperada de corners</span></article>
-          <article class="stat"><strong>${num(data.expected_ranges?.cards)}</strong><span>Media esperada de tarjetas</span></article>
-          <article class="stat"><strong>${esc(data.matchup?.sample_size)}</strong><span>Muestra usada</span></article>
-        `;
-
-        $('matchupOverview').innerHTML = `
-          <div class="compare">
-            <div class="club-box">
-              <span class="pill">Local</span>
-              <h4>${esc(data.matchup.home)}</h4>
-              <p class="muted">GF casa: ${num(data.home_form.goals_for_avg)} · GC casa: ${num(data.home_form.goals_against_avg)}</p>
-              <p class="muted">Corners: ${num(data.home_form.corners_for_avg)} · Tarjetas: ${num(data.home_form.cards_for_avg)}</p>
-            </div>
-            <div class="vs">VS</div>
-            <div class="club-box">
-              <span class="pill">Visitante</span>
-              <h4>${esc(data.matchup.away)}</h4>
-              <p class="muted">GF fuera: ${num(data.away_form.goals_for_avg)} · GC fuera: ${num(data.away_form.goals_against_avg)}</p>
-              <p class="muted">Corners: ${num(data.away_form.corners_for_avg)} · Tarjetas: ${num(data.away_form.cards_for_avg)}</p>
-            </div>
-          </div>
-        `;
-
-        $('expectedCards').innerHTML = `
-          <article class="card"><span class="pill">Goles</span><div class="metric">${num(data.expected_ranges.goals)}</div><p class="muted" style="margin-top:.5rem;">Estimación simple basada en ataque/defensa local y visitante.</p></article>
-          <article class="card"><span class="pill">Corners</span><div class="metric">${num(data.expected_ranges.corners)}</div><p class="muted" style="margin-top:.5rem;">Cruce entre corners a favor y corners concedidos.</p></article>
-          <article class="card"><span class="pill">Tarjetas</span><div class="metric">${num(data.expected_ranges.cards)}</div><p class="muted" style="margin-top:.5rem;">Estimación inicial para mercado de tarjetas.</p></article>
-        `;
-
-        if (!data.h2h || !data.h2h.length) {
-          $('h2hTable').innerHTML = '<div class="empty">No hay enfrentamientos directos guardados para este cruce.</div>';
-          return;
-        }
-
-        $('h2hTable').innerHTML = `
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Fecha</th>
-                  <th>Competición</th>
-                  <th>Partido</th>
-                  <th>Marcador</th>
-                  <th>Corners</th>
-                  <th>Tarjetas</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${data.h2h.map(m => `
-                  <tr>
-                    <td>${esc(new Date(m.match_date).toLocaleDateString('es-ES'))}</td>
-                    <td>${esc(m.competition_key)}</td>
-                    <td>${esc(m.home_team)} vs ${esc(m.away_team)}</td>
-                    <td>${esc(m.home_goals)}-${esc(m.away_goals)}</td>
-                    <td>${(Number(m.home_corners||0)+Number(m.away_corners||0))}</td>
-                    <td>${(Number(m.home_yellow_cards||0)+Number(m.away_yellow_cards||0)+Number(m.home_red_cards||0)+Number(m.away_red_cards||0))}</td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
-          </div>
-        `;
-      }
-
-      function renderTeam(data){
-        const p = data.percentages;
-        const a = data.averages;
-
-        $('teamPercentages').innerHTML = `
-          <div class="bars">
-            ${bar('Over 1.5 goles', p.over_1_5_goals)}
-            ${bar('Over 2.5 goles', p.over_2_5_goals)}
-            ${bar('Over 3.5 goles', p.over_3_5_goals)}
-            ${bar('BTTS', p.btts)}
-            ${bar('Clean sheet', p.clean_sheet)}
-            ${bar('Victoria', p.win)}
-            ${bar('Empate', p.draw)}
-            ${bar('Derrota', p.loss)}
-            ${bar('Over 8.5 corners', p.over_8_5_corners)}
-            ${bar('Over 4.5 tarjetas', p.over_4_5_cards)}
-          </div>
-        `;
-
-        $('teamAverages').innerHTML = `
-          <div class="grid grid-2">
-            ${miniMetric('Goles a favor', a.goals_for)}
-            ${miniMetric('Goles en contra', a.goals_against)}
-            ${miniMetric('Goles totales', a.total_goals)}
-            ${miniMetric('Corners a favor', a.corners_for)}
-            ${miniMetric('Corners concedidos', a.corners_against)}
-            ${miniMetric('Corners totales', a.total_corners)}
-            ${miniMetric('Amarillas a favor', a.yellows_for)}
-            ${miniMetric('Amarillas en contra', a.yellows_against)}
-            ${miniMetric('Rojas a favor', a.reds_for)}
-            ${miniMetric('Tarjetas totales', a.total_cards)}
-          </div>
-        `;
-
-        if (!data.recent_matches?.length) {
-          $('recentMatches').innerHTML = '<div class="empty">No hay muestra reciente disponible.</div>';
-          return;
-        }
-
-        $('recentMatches').innerHTML = `
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Fecha</th>
-                  <th>Comp</th>
-                  <th>Partido</th>
-                  <th>Resultado</th>
-                  <th>GF</th>
-                  <th>GC</th>
-                  <th>Corners</th>
-                  <th>Tarjetas</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${data.recent_matches.map(m => `
-                  <tr>
-                    <td>${esc(new Date(m.match_date).toLocaleDateString('es-ES'))}</td>
-                    <td>${esc(m.competition_key)}</td>
-                    <td>${esc(m.home_team)} vs ${esc(m.away_team)}</td>
-                    <td>${esc(m.result)}</td>
-                    <td>${esc(m.goalsFor)}</td>
-                    <td>${esc(m.goalsAgainst)}</td>
-                    <td>${esc(m.totalCorners)}</td>
-                    <td>${esc(m.totalCards)}</td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
-          </div>
-        `;
-      }
-
-      function bar(label, value){
-        return `<div class="bar-item"><div class="bar-head"><span>${esc(label)}</span><strong>${pct(value)}</strong></div><div class="bar-track"><div class="bar-fill" style="width:${Math.max(0, Math.min(100, Number(value||0)))}%"></div></div></div>`;
-      }
-
-      function miniMetric(label, value){
-        return `<article class="card"><span class="pill">${esc(label)}</span><div class="metric" style="font-size:1.55rem;">${num(value)}</div></article>`;
-      }
-
-      function bind(){
-        $('analyzeMatchupBtn').addEventListener('click', analyzeMatchup);
-        $('analyzeTeamBtn').addEventListener('click', analyzeTeam);
-        $('swapTeamsBtn').addEventListener('click', () => {
-          const home = $('homeTeam').value;
-          $('homeTeam').value = $('awayTeam').value;
-          $('awayTeam').value = home;
+      document.querySelectorAll('.day').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.date = new Date(btn.dataset.date + 'T12:00:00');
+          renderDays();
+          loadMatches();
         });
+      });
+
+      $('selectedDate').textContent = fmtDate(state.date);
+    }
+
+    async function loadCompetitions(){
+      try{
+        const res = await fetch('/api/competitions');
+        state.competitions = res.ok ? await res.json() : [];
+        $('competitionFilter').innerHTML =
+          `<option value="">Todas las competiciones</option>` +
+          state.competitions.map(c => `<option value="${esc(c.key)}">${esc(c.name)}</option>`).join('');
+      }catch(e){
+        $('competitionFilter').innerHTML = `<option value="">Todas las competiciones</option>`;
       }
 
-      themeInit();
-      bind();
-      loadCompetitions();
-      analyzeMatchup();
-      analyzeTeam();
-    })();
+      $('competitionFilter').addEventListener('change', () => {
+        state.allCompetition = $('competitionFilter').value;
+        loadMatches();
+      });
+    }
+
+    function groupByCompetition(rows){
+      const map = new Map();
+      for(const m of rows){
+        const k = m.competition_name || m.competition_key || 'Sin competición';
+        if(!map.has(k)) map.set(k, []);
+        map.get(k).push(m);
+      }
+      return [...map.entries()];
+    }
+
+    function renderMatches(rows){
+      $('countInfo').textContent = `${rows.length} partidos`;
+
+      if(!rows.length){
+        $('matchesList').className = 'empty';
+        $('matchesList').innerHTML = `No hay partidos para este día.`;
+        return;
+      }
+
+      $('matchesList').className = 'list';
+      $('matchesList').innerHTML = groupByCompetition(rows).map(([comp, items]) => `
+        <section class="section">
+          <div class="section-head">
+            <div><h2>${esc(comp)}</h2><small>${items.length} partido${items.length===1?'':'s'}</small></div>
+          </div>
+          <div style="display:grid;gap:12px;">
+            ${items.map(m => cardHtml(m)).join('')}
+          </div>
+        </section>
+      `).join('');
+
+      document.querySelectorAll('[data-match]').forEach(el => {
+        el.addEventListener('click', () => {
+          const id = el.getAttribute('data-match');
+          const match = rows.find(x => String(x.id) === String(id));
+          if(match) renderDetail(match);
+        });
+      });
+    }
+
+    function cardHtml(m){
+      const time = m.kickoff_time ? String(m.kickoff_time).slice(0,5) : '--:--';
+      const score = (m.home_goals ?? null) !== null && (m.away_goals ?? null) !== null ? `${m.home_goals}-${m.away_goals}` : 'vs';
+      const tags = [];
+      if (m.home_corners != null || m.away_corners != null) tags.push(`Corners ${(Number(m.home_corners||0)+Number(m.away_corners||0))}`);
+      if (m.home_yellow_cards != null || m.away_yellow_cards != null) tags.push(`Tarjetas ${(Number(m.home_yellow_cards||0)+Number(m.away_yellow_cards||0)+Number(m.home_red_cards||0)+Number(m.away_red_cards||0))}`);
+      if (m.market_goals) tags.push(`Pick goles ${m.market_goals}`);
+
+      return `
+        <article class="match" data-match="${esc(m.id)}">
+          <div class="row1">
+            <div class="comp">${esc(m.competition_key || '')}</div>
+            <div class="status">${esc(time)} · ${esc(m.status || 'scheduled')}</div>
+          </div>
+          <div class="teams">
+            <div class="team home">${esc(m.home_team)}</div>
+            <div class="score">${esc(score)}</div>
+            <div class="team away">${esc(m.away_team)}</div>
+          </div>
+          <div class="meta">
+            <span>${esc(m.match_date)}</span>
+            <span>${tags.join(' · ') || 'Sin métricas adicionales'}</span>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderDetail(m){
+      const totalGoals = Number(m.home_goals||0)+Number(m.away_goals||0);
+      const totalCorners = Number(m.home_corners||0)+Number(m.away_corners||0);
+      const totalCards = Number(m.home_yellow_cards||0)+Number(m.away_yellow_cards||0)+Number(m.home_red_cards||0)+Number(m.away_red_cards||0);
+
+      $('detailBox').innerHTML = `
+        <h3>${esc(m.home_team)} vs ${esc(m.away_team)}</h3>
+        <div class="sub">${esc(m.competition_name)} · ${esc(m.match_date)} · ${esc(m.kickoff_time || '--:--')}</div>
+        <div class="detail-score">
+          <span class="s">${esc(m.home_goals ?? '-')}</span>
+          <span class="muted">-</span>
+          <span class="s">${esc(m.away_goals ?? '-')}</span>
+        </div>
+        <div class="detail-grid">
+          <div class="kv"><span>Estado</span><strong>${esc(m.status || '-')}</strong></div>
+          <div class="kv"><span>Comp.</span><strong>${esc(m.competition_key || '-')}</strong></div>
+          <div class="kv"><span>Corners</span><strong>${totalCorners}</strong></div>
+          <div class="kv"><span>Tarjetas</span><strong>${totalCards}</strong></div>
+          <div class="kv"><span>Goles totales</span><strong>${totalGoals}</strong></div>
+          <div class="kv"><span>Predicción</span><strong>${esc(m.market_goals || 'N/D')}</strong></div>
+        </div>
+        <div class="detail-box">
+          <h4>Confianza</h4>
+          <div class="muted" style="margin-bottom:8px">
+            Goles ${esc(m.confidence_goals ?? 'N/D')} · Corners ${esc(m.confidence_corners ?? 'N/D')} · Tarjetas ${esc(m.confidence_cards ?? 'N/D')}
+          </div>
+          <div class="bar"><div class="fill" style="width:${Math.max(0,Math.min(100,Number(m.confidence_goals||0)))}%"></div></div>
+        </div>
+      `;
+    }
+
+    async function loadMatches(){
+      $('matchesList').innerHTML = '<div class="empty">Cargando partidos...</div>';
+      const qs = new URLSearchParams({ date: iso(state.date) });
+      if(state.allCompetition) qs.set('competition', state.allCompetition);
+
+      try{
+        const res = await fetch('/api/matches?' + qs.toString());
+        const rows = res.ok ? await res.json() : [];
+        state.matches = rows;
+        $('dayTitle').textContent = `Partidos de ${fmtDate(state.date)}`;
+        $('daySubtitle').textContent = state.allCompetition ? `Filtrado por ${state.allCompetition}` : 'Todas las competiciones';
+        renderMatches(rows);
+        if(rows[0]) renderDetail(rows[0]);
+      }catch(e){
+        $('matchesList').innerHTML = '<div class="empty">No se pudieron cargar los partidos.</div>';
+      }
+    }
+
+    $('prevDay').onclick = () => { state.date.setDate(state.date.getDate()-1); renderDays(); loadMatches(); };
+    $('nextDay').onclick = () => { state.date.setDate(state.date.getDate()+1); renderDays(); loadMatches(); };
+    $('reloadBtn').onclick = () => loadMatches();
+
+    renderDays();
+    loadCompetitions().then(loadMatches);
   </script>
 </body>
 </html>
