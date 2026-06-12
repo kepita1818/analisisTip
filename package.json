@@ -1,6 +1,6 @@
 {
   "name": "football-db-app",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Football predictions backend powered only by a local PostgreSQL database with automatic updates from open datasets.",
   "main": "src/app.js",
   "type": "module",
@@ -8,8 +8,8 @@
     "start": "node src/app.js",
     "dev": "node --watch src/app.js",
     "db:init": "psql $DATABASE_URL -f sql/schema.sql && psql $DATABASE_URL -f sql/views.sql",
-    "import:all": "node scripts/import-all.js",
-    "import:daily": "node scripts/import-all.js --daily",
+    "import:seed": "node scripts/import-seed.js",
+    "import:daily": "node scripts/import-daily.js",
     "recalc": "node scripts/recalculate-features.js"
   },
   "dependencies": {
